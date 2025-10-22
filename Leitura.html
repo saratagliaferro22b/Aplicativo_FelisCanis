@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoramento Pet</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #dcdcdc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .mobile-container {
+      width: 375px;
+      height: 812px;
+      background-color: #0d1320;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    /* Header */
+    .header {
+      background-color: #58775d;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .header a {
+      position: absolute;
+      left: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Corpo */
+    .content {
+      flex: 1;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 30px;
+    }
+
+    .box {
+      width: 220px;
+      height: 120px;
+      background-color: #f6f2ef;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      width: 260px;
+      height: 40px;
+      border: 2px solid #ffffff;
+      border-radius: 25px;
+      background: transparent;
+      color: white;
+      font-size: 15px;
+      text-align: center;
+      line-height: 38px;
+    }
+
+    .alertar {
+      margin-top: 20px;
+      color: white;
+      font-weight: bold;
+      align-self: flex-end;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="mobile-container">
+    <!-- Header -->
+    <div class="header">
+      <a href="#">&#9664;</a>
+      <h1>Monitoramento<br>Pet</h1>
+    </div>
+
+    <!-- Corpo -->
+    <div class="content">
+      <div class="box"></div>
+
+      <div class="button">Qualidade do ar:</div>
+      <div class="button">Monóxido de carbono:</div>
+      <div class="button">Temperatura:</div>
+      <div class="button">Umidade:</div>
+
+      <div class="alertar">ALERTAR</div>
+    </div>
+  </div>
+</body>
+</html>

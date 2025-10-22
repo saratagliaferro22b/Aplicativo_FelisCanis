@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro Pet</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #dcdcdc; /* Fundo cinza claro */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .mobile-container {
+            width: 375px; /* Largura de celular */
+            height: 812px; /* Altura de celular */
+            background-color: #0d1320; /* Fundo escuro do corpo */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background-color: #58775d; /* Verde escuro do cabeçalho */
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header a {
+            position: absolute;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            /* Modificado para refletir 'Cadastro pet' em uma linha */
+            line-height: 1; 
+        }
+
+        /* Corpo - Conteúdo do Formulário */
+        .content {
+            flex: 1;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            /* Espaçamento entre os campos de entrada */
+            gap: 20px; 
+            /* Para o efeito de onda no rodapé, usaremos um pseudo-elemento */
+            position: relative;
+        }
+        
+        /* Onda de fundo (simulação) */
+        .content::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px; /* Altura da área de onda */
+            /* Simula a cor da área de onda/rodapé */
+            background: radial-gradient(circle at 50% 100%, #1a2a47 0%, #0d1320 70%); 
+            z-index: 0;
+        }
+
+        /* Campo de Input (geral) */
+        .input-field, .select-field {
+            width: 100%; /* Largura total dentro do padding do content */
+            height: 50px;
+            padding: 0 15px;
+            background-color: #1a2a47; /* Fundo escuro do campo de input */
+            border: none;
+            border-radius: 4px;
+            color: #d3d3d3; /* Cor do texto e placeholder */
+            font-size: 16px;
+            outline: none;
+            z-index: 1; /* Coloca os campos acima da onda */
+            position: relative;
+        }
+
+        /* Estilo para o campo de problema de saúde */
+        .health-issue-field {
+            height: 70px; /* Um pouco mais alto */
+            padding-top: 5px; /* Ajuste para centralizar o placeholder/texto verticalmente */
+            padding-bottom: 5px;
+        }
+        
+        /* Ajuste para o placeholder/label */
+        .input-label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #d3d3d3;
+            font-size: 16px;
+            pointer-events: none; /* Não interfere com o input */
+        }
+        
+        /* Usando a estrutura de input com placeholder para simular o layout */
+        /* O estilo visual do campo será aplicado a um div ou input para simplificar */
+        
+        /* Estilo específico para o campo select */
+        .select-field {
+            appearance: none; /* Remove a seta padrão do select */
+            -webkit-appearance: none;
+            cursor: pointer;
+            padding-right: 35px; /* Espaço para a seta customizada */
+            position: relative;
+        }
+
+        /* Seta customizada para o campo select */
+        .select-wrapper {
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .select-wrapper::after {
+            content: "\25B2\25BC"; /* Símbolos de triângulo para cima e para baixo */
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d3d3d3;
+            font-size: 10px;
+            line-height: 1;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Botão Cadastrar */
+        .register-button {
+            width: 80%; /* Ajuste a largura conforme a imagem */
+            max-width: 250px;
+            height: 50px;
+            background-color: #58775d; /* Verde escuro do botão */
+            border: 1px solid #58775d; /* Borda da cor do fundo do botão */
+            border-radius: 25px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 50px;
+            margin-top: 30px; /* Espaçamento acima do botão */
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="header">
+            <a href="#">&#9664;</a> 
+            <h1>Cadastro pet</h1>
+        </div>
+
+        <div class="content">
+            <input type="text" class="input-field" placeholder="Nome:">
+
+            <input type="number" class="input-field" placeholder="Idade:">
+            
+            <div class="select-wrapper">
+                <select class="select-field">
+                    <option value="" disabled selected>Sexo:</option>
+                    <option value="macho">Macho</option>
+                    <option value="femea">Fêmea</option>
+                </select>
+            </div>
+            
+            <div class="select-wrapper">
+                <select class="select-field">
+                    <option value="" disabled selected>Tipo:</option>
+                    <option value="cachorro">Cachorro</option>
+                    <option value="gato">Gato</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+
+            <input type="text" class="input-field" placeholder="Raça:">
+
+            <input type="number" step="0.1" class="input-field" placeholder="Peso:">
+
+            <input type="text" class="input-field health-issue-field" placeholder="Problema de saúde (apenas 1):">
+
+            <button class="register-button">Cadastrar</button>
+        </div>
+    </div>
+</body>
+</html>

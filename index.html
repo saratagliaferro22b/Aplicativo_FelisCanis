@@ -14,7 +14,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #dcdcdc; /* Fundo cinza claro */
+            background-color: #dcdcdc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,9 +24,9 @@
         }
 
         .mobile-container {
-            width: 375px; /* Largura de celular */
-            height: 812px; /* Altura de celular */
-            background-color: #0d1320; /* Fundo escuro do corpo */
+            width: 375px;
+            height: 812px;
+            background-color: #0d1320;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -35,9 +35,8 @@
             position: relative;
         }
 
-        /* Header */
         .header {
-            background-color: #58775d; /* Verde escuro do cabeçalho */
+            background-color: #58775d;
             height: 80px;
             display: flex;
             align-items: center;
@@ -45,25 +44,14 @@
             position: relative;
         }
 
-        .header a {
-            position: absolute;
-            left: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 26px;
-            font-weight: bold;
-        }
-
         .header h1 {
             font-size: 20px;
             color: white;
             font-weight: bold;
             text-align: center;
-            /* Modificado para refletir 'Cadastro pet' em uma linha */
-            line-height: 1; 
+            line-height: 1;
         }
 
-        /* Corpo - Conteúdo do Formulário */
         .content {
             flex: 1;
             padding: 40px 30px;
@@ -71,71 +59,54 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            /* Espaçamento entre os campos de entrada */
-            gap: 20px; 
-            /* Para o efeito de onda no rodapé, usaremos um pseudo-elemento */
+            gap: 20px;
             position: relative;
         }
-        
-        /* Onda de fundo (simulação) */
+
         .content::before {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 150px; /* Altura da área de onda */
-            /* Simula a cor da área de onda/rodapé */
-            background: radial-gradient(circle at 50% 100%, #1a2a47 0%, #0d1320 70%); 
+            height: 150px;
+            background: radial-gradient(circle at 50% 100%, #1a2a47 0%, #0d1320 70%);
             z-index: 0;
         }
 
-        /* Campo de Input (geral) */
         .input-field, .select-field {
-            width: 100%; /* Largura total dentro do padding do content */
+            width: 100%;
             height: 50px;
             padding: 0 15px;
-            background-color: #1a2a47; /* Fundo escuro do campo de input */
+            background-color: #1a2a47;
             border: none;
             border-radius: 4px;
-            color: #d3d3d3; /* Cor do texto e placeholder */
-            font-size: 16px;
-            outline: none;
-            z-index: 1; /* Coloca os campos acima da onda */
-            position: relative;
-        }
-
-        /* Estilo para o campo de problema de saúde */
-        .health-issue-field {
-            height: 70px; /* Um pouco mais alto */
-            padding-top: 5px; /* Ajuste para centralizar o placeholder/texto verticalmente */
-            padding-bottom: 5px;
-        }
-        
-        /* Ajuste para o placeholder/label */
-        .input-label {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
             color: #d3d3d3;
             font-size: 16px;
-            pointer-events: none; /* Não interfere com o input */
+            outline: none;
+            z-index: 1;
+            position: relative;
         }
         
-        /* Usando a estrutura de input com placeholder para simular o layout */
-        /* O estilo visual do campo será aplicado a um div ou input para simplificar */
-        
-        /* Estilo específico para o campo select */
+        /* NOVO: Estilo para destacar campos inválidos (Opcional, mas melhora a experiência) */
+        .input-field.error, .select-field.error {
+            border: 2px solid #ff5757; /* Borda vermelha */
+        }
+
+        .health-issue-field {
+            height: 70px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
         .select-field {
-            appearance: none; /* Remove a seta padrão do select */
+            appearance: none;
             -webkit-appearance: none;
             cursor: pointer;
-            padding-right: 35px; /* Espaço para a seta customizada */
+            padding-right: 35px;
             position: relative;
         }
 
-        /* Seta customizada para o campo select */
         .select-wrapper {
             width: 100%;
             position: relative;
@@ -143,40 +114,49 @@
         }
 
         .select-wrapper::after {
-            content: "\25B2\25BC"; /* Símbolos de triângulo para cima e para baixo */
+            content: "\25B2\25BC";
             position: absolute;
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: #d3d3d3;
             font-size: 10px;
-            line-height: 1;
             pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
-        
-        /* Botão Cadastrar */
+
         .register-button {
-            width: 80%; /* Ajuste a largura conforme a imagem */
+            width: 80%;
             max-width: 250px;
             height: 50px;
-            background-color: #58775d; /* Verde escuro do botão */
-            border: 1px solid #58775d; /* Borda da cor do fundo do botão */
+            background-color: #58775d;
+            border: 1px solid #58775d;
             border-radius: 25px;
             color: white;
             font-size: 18px;
             font-weight: bold;
             text-align: center;
             line-height: 50px;
-            margin-top: 30px; /* Espaçamento acima do botão */
+            margin-top: 30px;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             z-index: 1;
         }
 
+        .register-button a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+        
+        /* NOVO: Estilo para a mensagem de erro */
+        #mensagemErro {
+            color: #ff5757;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: -10px; /* Ajusta a posição para ficar mais próxima dos campos */
+            z-index: 1;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -186,12 +166,11 @@
         </div>
 
         <div class="content">
-            <input type="text" class="input-field" placeholder="Nome:">
-
-            <input type="number" class="input-field" placeholder="Idade:">
+            <input type="text" class="input-field" id="nome" placeholder="Nome:">
+            <input type="number" class="input-field" id="idade" placeholder="Idade:">
             
             <div class="select-wrapper">
-                <select class="select-field">
+                <select class="select-field" id="sexo">
                     <option value="" disabled selected>Sexo:</option>
                     <option value="macho">Macho</option>
                     <option value="femea">Fêmea</option>
@@ -199,7 +178,7 @@
             </div>
             
             <div class="select-wrapper">
-                <select class="select-field">
+                <select class="select-field" id="tipo">
                     <option value="" disabled selected>Tipo:</option>
                     <option value="cachorro">Cachorro</option>
                     <option value="gato">Gato</option>
@@ -207,14 +186,71 @@
                 </select>
             </div>
 
-            <input type="text" class="input-field" placeholder="Raça:">
+            <input type="text" class="input-field" id="raca" placeholder="Raça:">
+            <input type="number" step="0.1" class="input-field" id="peso" placeholder="Peso:">
+            <input type="text" class="input-field health-issue-field" id="problema" placeholder="Problema de saúde (apenas 1):">
 
-            <input type="number" step="0.1" class="input-field" placeholder="Peso:">
+            <p id="mensagemErro" style="display: none;">
+                Por favor, preencha todos os campos antes de cadastrar!
+            </p>
 
-            <input type="text" class="input-field health-issue-field" placeholder="Problema de saúde (apenas 1):">
-
-            <button class="register-button"><a href="/space.html">Cadastrar</a></button>
+            <button class="register-button" id="btnCadastrar">Cadastrar</button>
         </div>
     </div>
+
+    <script>
+        document.getElementById("btnCadastrar").addEventListener("click", function (event) {
+            // Impedir o envio padrão do formulário (caso estivesse dentro de um <form>)
+            event.preventDefault(); 
+            
+            // 1. Coleta dos elementos e seus valores
+            const inputs = [
+                document.getElementById("nome"),
+                document.getElementById("idade"),
+                document.getElementById("sexo"),
+                document.getElementById("tipo"),
+                document.getElementById("raca"),
+                document.getElementById("peso"),
+                document.getElementById("problema")
+            ];
+
+            let todosPreenchidos = true;
+            const mensagemErroElement = document.getElementById("mensagemErro");
+
+            // 2. Limpa mensagens de erro e destaques anteriores
+            inputs.forEach(input => {
+                input.classList.remove('error');
+            });
+            mensagemErroElement.style.display = 'none';
+
+            // 3. Validação de cada campo
+            inputs.forEach(input => {
+                // Para campos de texto/número, usamos .trim()
+                // Para selects, pegamos o valor. A opção padrão tem value=""
+                const valor = input.value.trim();
+
+                if (!valor) {
+                    // Se estiver vazio, adiciona a classe de erro (borda vermelha)
+                    input.classList.add('error');
+                    todosPreenchidos = false; // Sinaliza que a validação falhou
+                }
+            });
+
+            // 4. Exibe a mensagem de erro ou prossegue
+            if (!todosPreenchidos) {
+                // Se algum campo estiver vazio, MOSTRA a mensagem e BLOQUEIA
+                mensagemErroElement.style.display = 'block';
+                return; 
+            }
+
+            // 5. Se tudo estiver preenchido (Sucesso)
+            // Aqui você faria o envio dos dados (Ex: usando fetch/AJAX)
+            
+            alert("Cadastro realizado com sucesso!");
+            
+            // Simula o redirecionamento após o cadastro (mantenha ou remova)
+            // window.location.href = "/space.html"; 
+        });
+    </script>
 </body>
 </html>

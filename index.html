@@ -88,9 +88,8 @@
             position: relative;
         }
         
-        /* NOVO: Estilo para destacar campos inválidos (Opcional, mas melhora a experiência) */
         .input-field.error, .select-field.error {
-            border: 2px solid #ff5757; /* Borda vermelha */
+            border: 2px solid #ff5757; /* Borda vermelha para campo inválido */
         }
 
         .health-issue-field {
@@ -148,12 +147,11 @@
             display: block;
         }
         
-        /* NOVO: Estilo para a mensagem de erro */
         #mensagemErro {
             color: #ff5757;
             font-size: 14px;
             font-weight: bold;
-            margin-top: -10px; /* Ajusta a posição para ficar mais próxima dos campos */
+            margin-top: -10px; 
             z-index: 1;
             text-align: center;
         }
@@ -200,10 +198,9 @@
 
     <script>
         document.getElementById("btnCadastrar").addEventListener("click", function (event) {
-            // Impedir o envio padrão do formulário (caso estivesse dentro de um <form>)
             event.preventDefault(); 
             
-            // 1. Coleta dos elementos e seus valores
+            // 1. Coleta dos elementos e prepara o objeto de dados
             const inputs = [
                 document.getElementById("nome"),
                 document.getElementById("idade"),
@@ -216,40 +213,48 @@
 
             let todosPreenchidos = true;
             const mensagemErroElement = document.getElementById("mensagemErro");
+            const petData = {}; 
 
             // 2. Limpa mensagens de erro e destaques anteriores
             inputs.forEach(input => {
                 input.classList.remove('error');
             });
-            mensagemErroElement.style.display = 'none';
+            if (mensagemErroElement) {
+                mensagemErroElement.style.display = 'none';
+            }
 
-            // 3. Validação de cada campo
+            // 3. Validação e coleta de dados
             inputs.forEach(input => {
-                // Para campos de texto/número, usamos .trim()
-                // Para selects, pegamos o valor. A opção padrão tem value=""
                 const valor = input.value.trim();
 
                 if (!valor) {
-                    // Se estiver vazio, adiciona a classe de erro (borda vermelha)
+                    // BLOQUEIA: Se estiver vazio, adiciona a classe de erro (borda vermelha) e falha a validação
                     input.classList.add('error');
-                    todosPreenchidos = false; // Sinaliza que a validação falhou
+                    todosPreenchidos = false;
+                } else {
+                    // Se preenchido, armazena no objeto de dados
+                    petData[input.id] = valor;
                 }
             });
 
             // 4. Exibe a mensagem de erro ou prossegue
             if (!todosPreenchidos) {
                 // Se algum campo estiver vazio, MOSTRA a mensagem e BLOQUEIA
-                mensagemErroElement.style.display = 'block';
+                if (mensagemErroElement) {
+                    mensagemErroElement.style.display = 'block';
+                }
                 return; 
             }
 
-            // 5. Se tudo estiver preenchido (Sucesso)
-            // Aqui você faria o envio dos dados (Ex: usando fetch/AJAX)
+            // 5. Se tudo estiver preenchido (Sucesso):
+            
+            // SALVA OS DADOS NO LOCALSTORAGE
+            localStorage.setItem('petCadastro', JSON.stringify(petData));
             
             alert("Cadastro realizado com sucesso!");
             
-            // Simula o redirecionamento após o cadastro (mantenha ou remova)
-            // window.location.href = "/space.html"; 
+            // Redireciona para a página de visualização dos dados
+            window.location.href = "space.html"; 
         });
     </script>
 </body>

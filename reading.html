@@ -1,127 +1,213 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monitoramento Pet</title>
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento Pet</title>
+
+    <style>
+        /* Reset */
+      /* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #111522;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* Container principal */
+.container {
+    width: 100%;
+    max-width: 420px;
+    background-color: #0E111A;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+/* Header */
+.topo {
+    background-color: #668968;
+    padding: 30px 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Caixa do sensor */
+.box-sensor {
+    width: 85%;
+    height: 110px;
+    background-color: #fff;
+    margin: 25px auto 15px auto;
+    border-radius: 6px;
+}
+
+/* Etiquetas do sensor */
+.sensor-label {
+    width: 85%;
+    margin: 12px auto;
+    padding: 14px;
+    border: 2px solid #fff;
+    text-align: center;
+    border-radius: 50px;
+    background-color: transparent;
+    font-size: 15px;
+}
+
+/* Botão alertar */
+.btn-alertar {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #668968;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 14px;
+    border-radius: 40px;
+}
+
+.btn-alertar:active,
+button:active {
+    opacity: .6;
+}
+
+/* Controle WebSocket */
+.controle {
+    width: 85%;
+    margin: 25px auto;
+    text-align: center;
+}
+
+input {
+    padding: 12px;
+    width: 100%;
+    border-radius: 25px;
+    border: none;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #668968;
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#responseStatus {
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 340px) {
+    .sensor-label {
+        font-size: 13px;
+        padding: 10px;
     }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #dcdcdc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 375px;
-      min-height: 100vh;
+    .topo {
+        font-size: 20px;
+        padding: 25px 10px;
     }
 
-    .mobile-container {
-      width: 375px;
-      height: 812px;
-      background-color: #0d1320;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-      position: relative;
+    button, .btn-alertar {
+        font-size: 14px;
     }
+}
 
-    /* Header */
-    .header {
-      background-color: #58775d;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .header a {
-      position: absolute;
-      left: 20px;
-      color: white;
-      text-decoration: none;
-      font-size: 26px;
-      font-weight: bold;
-    }
-
-    .header h1 {
-      font-size: 20px;
-      color: white;
-      font-weight: bold;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    /* Corpo */
-    .content {
-      flex: 1;
-      padding: 40px 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 30px;
-    }
-
-    .box {
-      width: 220px;
-      height: 120px;
-      background-color: #f6f2ef;
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-
-    .button {
-      width: 260px;
-      height: 40px;
-      border: 2px solid #ffffff;
-      border-radius: 25px;
-      background: transparent;
-      color: white;
-      font-size: 15px;
-      text-align: center;
-      line-height: 38px;
-    }
-
-    .alertar {
-      margin-top: 20px;
-      color: white;
-      font-weight: bold;
-      align-self: flex-end;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-  </style>
+    </style>
 </head>
 <body>
-  <div class="mobile-container">
-    <!-- Header -->
-    <div class="header">
-      <h1>Monitoramento<br>Pet</h1>
+
+    <div class="container">
+
+        <div class="topo">
+            Monitoramento<br>Pet
+        </div>
+
+        <div class="box-sensor"></div>
+
+        <!-- Labels visuais iguais ao app -->
+        <div class="sensor-label">Qualidade do ar: <span id="arValue">--</span></div>
+        <div class="sensor-label">Monóxido de carbono: <span id="gasValue">--</span></div>
+        <div class="sensor-label">Temperatura: <span id="tempValue">--</span>°C</div>
+        <div class="sensor-label">Umidade: <span id="umidValue">--</span>%</div>
+
+        <div class="btn-alertar" onclick="sendCommand()">ALERTAR</div>
+
+        <!-- Controle de comandos WebSocket -->
+        <div class="controle">
+            <input type="text" id="commandInput" placeholder="Ex: alertar ou desligar">
+            <button onclick="sendCommand()">Enviar Comando</button>
+            <p id="responseStatus"></p>
+        </div>
+
     </div>
 
-    <!-- Corpo -->
-    <div class="content">
-      <div class="box"></div>
+    <script>
+        var gateway = `ws://${window.location.hostname}/ws`;
+        var websocket;
 
-      <div class="button">Qualidade do ar:</div>
-      <div class="button">Monóxido de carbono:</div>
-      <div class="button">Temperatura:</div>
-      <div class="button">Umidade:</div>
+        window.addEventListener("load", onLoad);
 
-      <div class="alertar">ALERTAR</div>
-    </div>
-  </div>
+        function onLoad() {
+            initWebSocket();
+        }
+
+        function initWebSocket() {
+            websocket = new WebSocket(gateway);
+            websocket.onopen = () => console.log("WebSocket conectado!");
+            websocket.onclose = () => {
+                console.log("Conexão perdida. Reconectando...");
+                setTimeout(initWebSocket, 2000);
+            };
+            websocket.onmessage = onMessage;
+        }
+
+        function onMessage(event) {
+            try {
+                const sensorData = JSON.parse(event.data);
+                document.getElementById("tempValue").innerHTML = sensorData.temp;
+                document.getElementById("umidValue").innerHTML = sensorData.umid;
+                document.getElementById("gasValue").innerHTML = sensorData.gas;
+                document.getElementById("arValue").innerHTML = sensorData.ar;
+            } catch (err) {
+                document.getElementById("responseStatus").innerHTML = event.data;
+            }
+        }
+
+        function sendCommand() {
+            const command = document.getElementById("commandInput").value;
+            if (websocket.readyState === 1) {
+                websocket.send(command);
+                document.getElementById("responseStatus").innerHTML = 
+                "✅ Comando enviado: " + command;
+                document.getElementById("commandInput").value = "";
+            } else {
+                document.getElementById("responseStatus").innerHTML =
+                "⚠️ WebSocket não está conectado";
+            }
+        }
+    </script>
+
 </body>
 </html>

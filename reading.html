@@ -7,133 +7,123 @@
 
     <style>
         /* Reset */
-      /* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body {
-    background-color: #111522;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
+        body {
+            background-color: #111522;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            padding: 20px 10px;
+        }
 
-/* Container principal */
-.container {
-    width: 100%;
-    max-width: 420px;
-    background-color: #0E111A;
-    border-radius: 10px;
-    padding-bottom: 20px;
-}
+        /* Container principal */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background-color: #0E111A;
+            border-radius: 12px;
+            padding: 20px 0 30px 0;
+        }
 
-/* Header */
-.topo {
-    background-color: #668968;
-    padding: 30px 20px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
+        /* Header */
+        .topo {
+            background-color: #668968;
+            padding: 35px 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
 
-/* Caixa do sensor */
-.box-sensor {
-    width: 85%;
-    height: 110px;
-    background-color: #fff;
-    margin: 25px auto 15px auto;
-    border-radius: 6px;
-}
+        /* Etiquetas do sensor */
+        .sensor-label {
+            width: 90%;
+            margin: 15px auto;
+            padding: 18px;
+            border: 2px solid #fff;
+            text-align: center;
+            border-radius: 50px;
+            background-color: transparent;
+            font-size: 16px;
+        }
 
-/* Etiquetas do sensor */
-.sensor-label {
-    width: 85%;
-    margin: 12px auto;
-    padding: 14px;
-    border: 2px solid #fff;
-    text-align: center;
-    border-radius: 50px;
-    background-color: transparent;
-    font-size: 15px;
-}
+        /* Botão alertar */
+        .btn-alertar {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #ffffff;
+            background-color: #668968;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 16px;
+            border-radius: 45px;
+        }
 
-/* Botão alertar */
-.btn-alertar {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #ffffff;
-    background-color: #668968;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 14px;
-    border-radius: 40px;
-}
+        .btn-alertar:active,
+        button:active {
+            opacity: .7;
+        }
 
-.btn-alertar:active,
-button:active {
-    opacity: .6;
-}
+        /* Controle WebSocket */
+        .controle {
+            width: 90%;
+            margin: 25px auto;
+            text-align: center;
+        }
 
-/* Controle WebSocket */
-.controle {
-    width: 85%;
-    margin: 25px auto;
-    text-align: center;
-}
+        input {
+            padding: 14px;
+            width: 100%;
+            border-radius: 28px;
+            border: none;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
 
-input {
-    padding: 12px;
-    width: 100%;
-    border-radius: 25px;
-    border: none;
-    font-size: 15px;
-    margin-bottom: 10px;
-}
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #668968;
+            border: none;
+            border-radius: 28px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #668968;
-    border: none;
-    border-radius: 25px;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-}
+        #responseStatus {
+            font-size: 15px;
+            margin-top: 15px;
+        }
 
-#responseStatus {
-    font-size: 14px;
-    margin-top: 12px;
-}
+        /* Ajustes para telas pequenas */
+        @media (max-width: 360px) {
+            .sensor-label {
+                font-size: 14px;
+                padding: 14px;
+            }
 
-/* Ajustes para telas muito pequenas */
-@media (max-width: 340px) {
-    .sensor-label {
-        font-size: 13px;
-        padding: 10px;
-    }
+            .topo {
+                font-size: 22px;
+                padding: 30px 10px;
+            }
 
-    .topo {
-        font-size: 20px;
-        padding: 25px 10px;
-    }
-
-    button, .btn-alertar {
-        font-size: 14px;
-    }
-}
-
+            button, .btn-alertar, input {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -144,15 +134,11 @@ button {
             Monitoramento<br>Pet
         </div>
 
-        <div class="box-sensor"></div>
-
-        <!-- Labels visuais iguais ao app -->
+        <!-- Labels visuais -->
         <div class="sensor-label">Qualidade do ar: <span id="arValue">--</span></div>
         <div class="sensor-label">Monóxido de carbono: <span id="gasValue">--</span></div>
         <div class="sensor-label">Temperatura: <span id="tempValue">--</span>°C</div>
         <div class="sensor-label">Umidade: <span id="umidValue">--</span>%</div>
-
-        <div class="btn-alertar" onclick="sendCommand()">ALERTAR</div>
 
         <!-- Controle de comandos WebSocket -->
         <div class="controle">

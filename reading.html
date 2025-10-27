@@ -1,199 +1,180 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoramento Pet</title>
-
+<html>
+  <head>
+    <title>Monitoramento ESP32</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
     <style>
-        /* Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+      /* Estilo Global e Tema Escuro */
+      :root {
+        --bg-dark: #121212; /* Fundo principal da tela/body */
+        --bg-card: #1e1e1e; /* Fundo do container do App */
+        --accent-green: #4a774a;
+        --text-light: #ffffff;
+        --border-light: #f0f0f0;
+        --input-bg: #2c2c2c;
+        --input-white: #ffffff; /* Fundo do input na imagem é branco */
+      }
+      
+      /* Otimização para ocupar 100% da altura da tela */
+      html, body {
+        height: 100%; /* Garante que body e html ocupem 100% da viewport */
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--bg-dark); /* Fundo escuro em toda a tela */
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-        body {
-            background-color: #111522;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            padding: 20px 10px;
-        }
+      /* Contêiner principal, limitando a largura e ocupando toda a altura */
+      .app-container {
+        width: 100%;
+        max-width: 400px;
+        background-color: var(--bg-card);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        /* Flex Grow garante que ele ocupe o espaço restante se o body for maior */
+        flex-grow: 1; 
+      }
 
-        /* Container principal */
-        .container {
-            width: 100%;
-            max-width: 420px;
-            background-color: #0E111A;
-            border-radius: 12px;
-            padding: 20px 0 30px 0;
-        }
+      /* Cabeçalho Verde */
+      h1 {
+        background-color: var(--accent-green);
+        color: var(--text-light);
+        text-align: center;
+        padding: 25px 0; /* Aumentado o padding para se parecer mais com a imagem */
+        margin: 0;
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+      
+      /* Estilo dos Cartões de Dados e Controles */
+      .content-area {
+        padding: 20px;
+      }
 
-        /* Header */
-        .topo {
-            background-color: #668968;
-            padding: 35px 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
+      .data-card {
+        background-color: var(--bg-card); /* Mantido o fundo do app-container */
+        color: var(--text-light);
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        border-radius: 40px; /* Cantos mais arredondados para se aproximar da imagem */
+        border: 2px solid var(--border-light); /* Borda branca mais visível */
+        font-size: 1em;
+        text-align: left;
+      }
 
-        /* Etiquetas do sensor */
-        .sensor-label {
-            width: 90%;
-            margin: 15px auto;
-            padding: 18px;
-            border: 2px solid #fff;
-            text-align: center;
-            border-radius: 50px;
-            background-color: transparent;
-            font-size: 16px;
-        }
+      /* Input de Comando */
+      #commandInput {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 1em;
+        border-radius: 10px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+        
+        /* Ajuste para o input branco conforme a imagem */
+        background-color: var(--input-white);
+        border: 1px solid var(--input-white); 
+        color: #000000; /* Texto preto no input branco */
+      }
+      #commandInput::placeholder {
+        color: #777777; /* Placeholder cinza no input branco */
+      }
 
-        /* Botão alertar */
-        .btn-alertar {
-            margin-top: 25px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #ffffff;
-            background-color: #668968;
-            width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 16px;
-            border-radius: 45px;
-        }
+      /* Botão */
+      button {
+        width: 100%;
+        padding: 15px;
+        font-size: 1em;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: var(--accent-green);
+        color: var(--text-light);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: bold;
+      }
 
-        .btn-alertar:active,
-        button:active {
-            opacity: .7;
-        }
+      button:hover {
+        background-color: #5a8a5a;
+      }
 
-        /* Controle WebSocket */
-        .controle {
-            width: 90%;
-            margin: 25px auto;
-            text-align: center;
-        }
-
-        input {
-            padding: 14px;
-            width: 100%;
-            border-radius: 28px;
-            border: none;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: #668968;
-            border: none;
-            border-radius: 28px;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #responseStatus {
-            font-size: 15px;
-            margin-top: 15px;
-        }
-
-        /* Ajustes para telas pequenas */
-        @media (max-width: 360px) {
-            .sensor-label {
-                font-size: 14px;
-                padding: 14px;
-            }
-
-            .topo {
-                font-size: 22px;
-                padding: 30px 10px;
-            }
-
-            button, .btn-alertar, input {
-                font-size: 14px;
-                padding: 12px;
-            }
-        }
+      /* Status de Resposta */
+      #responseStatus {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9em;
+        color: #bbbbbb;
+      }
+      h2 { display: none; } /* Oculta o h2 original */
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="app-container">
+      <h1>Monitoramento Pet</h1> 
+      
+      <div class="content-area">
+        <div class="data-card">Qualidade do ar: --</div>
+        <div class="data-card">Monóxido de carbono: --</div>
+        <div class="data-card">Temperatura: --°C</div>
+        <div class="data-card">Umidade: --%</div>
 
-    <div class="container">
-
-        <div class="topo">
-            Monitoramento<br>Pet
-        </div>
-
-        <!-- Labels visuais -->
-        <div class="sensor-label">Qualidade do ar: <span id="arValue">--</span></div>
-        <div class="sensor-label">Monóxido de carbono: <span id="gasValue">--</span></div>
-        <div class="sensor-label">Temperatura: <span id="tempValue">--</span>°C</div>
-        <div class="sensor-label">Umidade: <span id="umidValue">--</span>%</div>
-
-        <!-- Controle de comandos WebSocket -->
-        <div class="controle">
-            <input type="text" id="commandInput" placeholder="Ex: alertar ou desligar">
-            <button onclick="sendCommand()">Enviar Comando</button>
-            <p id="responseStatus"></p>
-        </div>
-
+        <input
+          type='text'
+          id='commandInput'
+          placeholder='Ex: alertar ou desligar'
+        />
+        <button onclick='sendCommand()'>Enviar Comando</button>
+        <p id='responseStatus'></p>
+      </div>
     </div>
-
+    
     <script>
-        var gateway = `ws://${window.location.hostname}/ws`;
-        var websocket;
-
-        window.addEventListener("load", onLoad);
-
-        function onLoad() {
-            initWebSocket();
+      var Socket;
+      function init() {
+        // Tente usar 'ws://' + window.location.hostname + ':81/'
+        Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+        
+        Socket.onopen = function () {
+            document.getElementById('responseStatus').innerHTML = 'Status: Conectado.';
+        };
+        Socket.onclose = function () {
+            document.getElementById('responseStatus').innerHTML = 'Status: Desconectado. Tentando reconectar...';
+            setTimeout(init, 5000);
+        };
+        Socket.onerror = function (e) {
+             document.getElementById('responseStatus').innerHTML = 'Status: Erro de conexão.';
+        };
+        Socket.onmessage = function (event) {
+          processCommand(event);
+        };
+      };
+      
+      function sendCommand() {
+        var command = document.getElementById('commandInput').value;
+        if (Socket && Socket.readyState === WebSocket.OPEN && command.trim() !== '') {
+          Socket.send(command);
+          document.getElementById('responseStatus').innerHTML =
+            'Comando enviado: ' + command;
+          document.getElementById('commandInput').value = '';
+        } else {
+          document.getElementById('responseStatus').innerHTML =
+            'Status: Sem conexão ou comando vazio.';
         }
-
-        function initWebSocket() {
-            websocket = new WebSocket(gateway);
-            websocket.onopen = () => console.log("WebSocket conectado!");
-            websocket.onclose = () => {
-                console.log("Conexão perdida. Reconectando...");
-                setTimeout(initWebSocket, 2000);
-            };
-            websocket.onmessage = onMessage;
-        }
-
-        function onMessage(event) {
-            try {
-                const sensorData = JSON.parse(event.data);
-                document.getElementById("tempValue").innerHTML = sensorData.temp;
-                document.getElementById("umidValue").innerHTML = sensorData.umid;
-                document.getElementById("gasValue").innerHTML = sensorData.gas;
-                document.getElementById("arValue").innerHTML = sensorData.ar;
-            } catch (err) {
-                document.getElementById("responseStatus").innerHTML = event.data;
-            }
-        }
-
-        function sendCommand() {
-            const command = document.getElementById("commandInput").value;
-            if (websocket.readyState === 1) {
-                websocket.send(command);
-                document.getElementById("responseStatus").innerHTML = 
-                "✅ Comando enviado: " + command;
-                document.getElementById("commandInput").value = "";
-            } else {
-                document.getElementById("responseStatus").innerHTML =
-                "⚠️ WebSocket não está conectado";
-            }
-        }
+      };
+      
+      function processCommand(event) {
+        document.getElementById('responseStatus').innerHTML =
+          'Resposta: ' + event.data;
+      };
+      
+      window.onload = init;
     </script>
-
-</body>
+  </body>
 </html>

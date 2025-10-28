@@ -1,171 +1,130 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Monitoramento Pet</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <!-- Load Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Configuração de cores e fontes para replicar o estilo da imagem
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-dark': '#10171d', // Fundo Principal (Muito Escuro)
-                        'header-green': '#547d61', // Cor do Cabeçalho e Destaques
-                        'card-dark': '#282d33',    // Cor dos Cartões de Dados e Input
-                        'text-light': '#e0e0e0',   // Cor do Texto
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Monitoramento ESP32</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
     <style>
-        /* Padrão de fundo customizado para dar profundidade, similar ao da imagem */
-        body {
-            background-color: #10171d;
-            background-image: radial-gradient(circle at 50% 100%, rgba(84, 125, 97, 0.1) 0%, rgba(16, 23, 29, 0.8) 50%),
-                              radial-gradient(circle at 50% 0%, rgba(84, 125, 97, 0.1) 0%, rgba(16, 23, 29, 0.8) 50%);
-            min-height: 100vh;
-        }
-        /* Garantir que o input seja transparente para usar o fundo do card-dark */
-        #commandInput::placeholder {
-            color: #9ca3af; /* Cor do placeholder mais suave */
-        }
+      /* Estilo geral para o corpo da página */
+      body {
+        margin: 0;
+        padding: 0;
+        /* Cor de fundo EXATAMENTE como na imagem fornecida */
+        background-color: #1A222C; /* Cor da imagem */
+        color: #E0E0E0; /* Cor do texto claro para contraste */
+        font-family: Arial, sans-serif;
+      }
+
+      /* Estilo para a barra superior (simulação baseada no <h1>) */
+      .header-bar {
+        background-color: #4F6B4F; /* Verde-musgo escuro da barra de título da imagem original */
+        color: white;
+        padding: 15px 10px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        position: relative;
+      }
+
+      /* Estilo para o ícone de voltar (a seta) */
+      .back-arrow {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        cursor: pointer;
+      }
+      
+      /* Estilo para o conteúdo principal */
+      .content {
+          padding: 20px;
+      }
+
+      /* Estilo para os títulos h1 e h2 */
+      h1 {
+          display: none; /* Esconde o h1 original */
+      }
+      
+      h2 {
+        color: #A0A0A0; /* Um cinza claro para o subtítulo */
+        margin-top: 30px;
+      }
+
+      /* Estilo para o campo de input */
+      #commandInput {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #4F6B4F;
+        border-radius: 5px;
+        background-color: #2D333B; /* Fundo do input um pouco mais claro para destaque */
+        color: #E0E0E0;
+      }
+
+      /* Estilo para o botão */
+      button {
+        background-color: #4F6B4F; /* Verde-musgo escuro */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background-color: #6A876A; /* Um pouco mais claro no hover */
+      }
+
+      /* Estilo para o status da resposta */
+      #responseStatus {
+        margin-top: 20px;
+        font-style: italic;
+        color: #707070; /* Cor de texto discreta */
+      }
     </style>
   </head>
-  <body class="font-sans text-text-light">
-    <div class="min-h-screen">
-        <!-- Header Bar (Monitoramento Pet) - Cor verde-oliva da imagem -->
-        <header class="bg-header-green shadow-lg">
-            <div class="max-w-md mx-auto flex justify-center items-center p-4 relative">
-                <!-- Ícone de seta - Posicionamento absoluto para não interferir no centro -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 cursor-pointer text-white absolute left-4">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-                <h1 class="text-3xl font-bold text-white">Monitoramento Pet</h1>
-            </div>
-        </header>
-
-        <!-- Main Content Area -->
-        <main class="max-w-md mx-auto p-4 space-y-6">
-
-            <!-- Cartões de Dados do Sensor (Adicionados para replicar o visual da imagem) -->
-            <div class="space-y-4">
-                <h2 class="text-sm uppercase font-semibold text-header-green pt-2">Dados do Sensor (Exemplo Visual)</h2>
-                
-                <!-- Card Qualidade do Ar -->
-                <div class="p-3 bg-card-dark rounded-xl text-lg font-medium shadow-md w-full border border-gray-600 flex justify-between items-center">
-                    <span>Qualidade do Ar:</span>
-                    <span class="text-header-green font-bold">Excelente</span>
-                </div>
-                
-                <!-- Card Monóxido de Carbono -->
-                <div class="p-3 bg-card-dark rounded-xl text-lg font-medium shadow-md w-full border border-gray-600 flex justify-between items-center">
-                    <span>Monóxido de Carbono:</span>
-                    <span class="text-yellow-400 font-bold">0 PPM</span>
-                </div>
-            </div>
-
-            <!-- Controle de Comandos Section (Com a funcionalidade original) -->
-            <div class="space-y-4 pt-6">
-                <h2 class="text-sm uppercase font-semibold text-header-green">Controle de Comandos</h2>
-
-                <!-- Input e Botão agrupados e estilizados como um 'card' -->
-                <div class="p-2 bg-card-dark rounded-xl shadow-md border border-gray-600 flex space-x-2">
-                    <input
-                        type='text'
-                        id='commandInput'
-                        placeholder='Ex: alertar ou desligar'
-                        class="w-full bg-transparent text-text-light placeholder-gray-500 focus:outline-none p-1"
-                    />
-                    <button
-                        onclick='sendCommand()'
-                        class="px-4 py-2 bg-header-green text-white font-semibold rounded-lg hover:bg-opacity-90 transition duration-150 shadow-md"
-                    >
-                        Enviar
-                    </button>
-                </div>
-
-                <!-- Status Display -->
-                <p id='responseStatus' class="text-sm text-text-light/80 pt-2 h-6">Status: Inicializando...</p>
-            </div>
-
-        </main>
+  <body>
+    <div class="header-bar">
+        <span class="back-arrow" onclick="history.back()">&#10094;</span> 
+        Monitoramento Pet
     </div>
+    
+    <div class="content">
+        <h1>Monitoramento Pet</h1> 
 
-    <script type="text/javascript">
-        // --- WebSocket Implementation (Funcionalidade Original) ---
-        var Socket;
-        
-        // Função para iniciar a conexão WebSocket
-        function init() {
-            try {
-                // Tenta conectar ao WebSocket no mesmo host na porta 81
-                Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
-                
-                Socket.onopen = function() {
-                    document.getElementById('responseStatus').innerHTML = 'Status: Conectado ao ESP32';
-                    console.log('WebSocket Conectado.');
-                };
-                
-                Socket.onclose = function() {
-                    document.getElementById('responseStatus').innerHTML = 'Status: Desconectado. Tentando reconectar em 5s...';
-                    console.error('WebSocket Desconectado.');
-                    setTimeout(init, 5000); // Tenta reconectar após 5 segundos
-                };
-                
-                Socket.onerror = function(error) {
-                    document.getElementById('responseStatus').innerHTML = 'Status: Erro na Conexão';
-                    console.error('WebSocket Error:', error);
-                };
-                
-                Socket.onmessage = function (event) {
-                    processCommand(event);
-                };
-            } catch (e) {
-                document.getElementById('responseStatus').innerHTML = 'Status: Erro ao Tentar Conectar';
-                console.error('Erro ao iniciar WebSocket:', e);
-            }
-        };
-
-        // Função para enviar o comando do input
-        function sendCommand() {
-            var commandInput = document.getElementById('commandInput');
-            var command = commandInput.value.trim();
-
-            if (!command) {
-                document.getElementById('responseStatus').innerHTML = 'Por favor, insira um comando antes de enviar.';
-                return;
-            }
-
-            if (Socket && Socket.readyState === WebSocket.OPEN) {
-                Socket.send(command);
-                document.getElementById('responseStatus').innerHTML =
-                    'Comando enviado: ' + command;
-                commandInput.value = ''; // Limpa o input após o envio
-            } else if (Socket.readyState !== WebSocket.OPEN) {
-                document.getElementById('responseStatus').innerHTML = 'Erro: WebSocket não está aberto. Tentando reconectar...';
-                console.warn('WebSocket not open. ReadyState:', Socket.readyState);
-                init(); // Tenta reconectar
-            }
-        };
-
-        // Função para processar a resposta do servidor
-        function processCommand(event) {
-            var serverResponse = event.data;
-            document.getElementById('responseStatus').innerHTML =
-                'Resposta do Servidor: ' + serverResponse;
-            console.log('Dado Recebido: ' + serverResponse);
-        };
-
-        // Inicializa a conexão ao carregar a página
-        window.onload = function () {
-            init();
-        };
-    </script>
+        <h2>Controle de Comandos</h2>
+        <input
+          type='text'
+          id='commandInput'
+          placeholder='Ex: alertar ou desligar'
+        />
+        <button onclick='sendCommand()'>Enviar Comando</button>
+        <p id='responseStatus'></p>
+    </div>
   </body>
-</html>                                                                                                  
+  <script>
+    var Socket;
+    function init() {
+      Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+      Socket.onmessage = function (event) {
+        processCommand(event);
+      };
+    };
+    function sendCommand() {
+      var command = document.getElementById('commandInput').value;
+      Socket.send(command); 
+      document.getElementById('responseStatus').innerHTML =
+        'Comando enviado: ' + command;
+      document.getElementById('commandInput').value = '';
+    };
+    function processCommand(event) {
+      document.getElementById('responseStatus').innerHTML =
+        'Resposta do Servidor: ' + event.data;
+      console.log('Dado Recebido: ' + event.data);
+    };
+    window.onload = function (event) {
+      init();
+    };
+  </script>
+</html>

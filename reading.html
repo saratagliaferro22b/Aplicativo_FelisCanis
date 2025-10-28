@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monitoramento ESP32</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <style>
+      /* Estilo geral para o corpo da página */
+      body {
+        margin: 0;
+        padding: 0;
+        /* Cor de fundo EXATAMENTE como na imagem fornecida */
+        background-color: #1A222C; /* Cor da imagem */
+        color: #E0E0E0; /* Cor do texto claro para contraste */
+        font-family: Arial, sans-serif;
+      }
+
+      /* Estilo para a barra superior (simulação baseada no <h1>) */
+      .header-bar {
+        background-color: #4F6B4F; /* Verde-musgo escuro da barra de título da imagem original */
+        color: white;
+        padding: 15px 10px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        position: relative;
+      }
+
+      /* Estilo para o ícone de voltar (a seta) */
+      .back-arrow {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        cursor: pointer;
+      }
+      
+      /* Estilo para o conteúdo principal */
+      .content {
+          padding: 20px;
+      }
+
+      /* Estilo para os títulos h1 e h2 */
+      h1 {
+          display: none; /* Esconde o h1 original */
+      }
+      
+      h2 {
+        color: #A0A0A0; /* Um cinza claro para o subtítulo */
+        margin-top: 30px;
+      }
+
+      /* Estilo para o campo de input */
+      #commandInput {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #4F6B4F;
+        border-radius: 5px;
+        background-color: #2D333B; /* Fundo do input um pouco mais claro para destaque */
+        color: #E0E0E0;
+      }
+
+      /* Estilo para o botão */
+      button {
+        background-color: #4F6B4F; /* Verde-musgo escuro */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background-color: #6A876A; /* Um pouco mais claro no hover */
+      }
+
+      /* Estilo para o status da resposta */
+      #responseStatus {
+        margin-top: 20px;
+        font-style: italic;
+        color: #707070; /* Cor de texto discreta */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-bar">
+        <span class="back-arrow" onclick="history.back()">&#10094;</span> 
+        Monitoramento Pet
+    </div>
+    
+    <div class="content">
+        <h1>Monitoramento Pet</h1> 
+
+        <h2>Controle de Comandos</h2>
+        <input
+          type='text'
+          id='commandInput'
+          placeholder='Ex: alertar ou desligar'
+        />
+        <button onclick='sendCommand()'>Enviar Comando</button>
+        <p id='responseStatus'></p>
+    </div>
+  </body>
+  <script>
+    var Socket;
+    function init() {
+      Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+      Socket.onmessage = function (event) {
+        processCommand(event);
+      };
+    };
+    function sendCommand() {
+      var command = document.getElementById('commandInput').value;
+      Socket.send(command); 
+      document.getElementById('responseStatus').innerHTML =
+        'Comando enviado: ' + command;
+      document.getElementById('commandInput').value = '';
+    };
+    function processCommand(event) {
+      document.getElementById('responseStatus').innerHTML =
+        'Resposta do Servidor: ' + event.data;
+      console.log('Dado Recebido: ' + event.data);
+    };
+    window.onload = function (event) {
+      init();
+    };
+  </script>
+</html>
